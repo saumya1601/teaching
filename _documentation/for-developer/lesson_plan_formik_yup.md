@@ -7,7 +7,7 @@ This lesson plan is designed for students who **have not yet learned React Hooks
 ## ⏱️ The 60-Minute Lesson Timeline
 
 | Timebox | Phase | Key Focus |
-| --- | --- | --- |
+| :--- | :--- | :--- |
 | **00:00 - 05:00** | **Setup & Installation** | Install `formik` and `yup` and prepare a blank slate. |
 | **05:00 - 12:00** | **Progression 1: The Form Challenge** | Demonstrate standard HTML form reload. Introduce Formik as the "state manager" for our SPA. |
 | **12:00 - 24:00** | **Progression 2: Core Components** | Write `<Formik>`, `<Form>`, and `<Field>`. Emphasize matching the `name` attribute to `initialValues`. |
@@ -53,19 +53,30 @@ Then, delete the contents of `App.jsx` and `index.css` (or styles that might con
 // Show this first — watch the page reload on submit!
 function BrokenForm() {
   return (
-    <form>
-      <input type="text" placeholder="Username" />
-      <button type="submit">Submit</button>
+    <form className="p-6 max-w-md mx-auto border border-gray-800 bg-[#0d1527] rounded-xl flex flex-col gap-4">
+      <input 
+        type="text" 
+        placeholder="Username" 
+        className="w-full p-2 bg-[#16223f] border border-gray-700 rounded text-white" 
+      />
+      <button 
+        type="submit" 
+        className="px-4 py-2 bg-indigo-600 text-white rounded cursor-pointer hover:bg-indigo-700"
+      >
+        Submit
+      </button>
     </form>
   );
 }
 ```
 
 **Then ask the class:**
-- *"Where did the data go when we submitted?"* (Nowhere useful — the browser handled it the old way)
-- *"What would we need to write ourselves to capture it?"* (Event handlers, state, `preventDefault`... it adds up fast)
 
-**Introduce Formik:** 
+* *"Where did the data go when we submitted?"* (Nowhere useful — the browser handled it the old way)
+* *"What would we need to write ourselves to capture it?"* (Event handlers, state, `preventDefault`... it adds up fast)
+
+**Introduce Formik:**
+
 > [!NOTE]
 > "Instead of wiring all of that ourselves, `<Formik>` is a specialized container component that captures, manages, and validates our form data — all through props."
 
@@ -86,34 +97,50 @@ function SimpleForm() {
         console.log('Submitted:', values);
       }}
     >
-      <Form>
+      <Form className="p-6 max-w-md mx-auto border border-gray-800 bg-[#0d1527] rounded-xl flex flex-col gap-4">
         <div>
-          <label>Username:</label>
-          <Field name="username" type="text" />
+          <label className="block mb-1 text-gray-200">Username:</label>
+          <Field 
+            name="username" 
+            type="text" 
+            className="w-full p-2 bg-[#16223f] border border-gray-700 rounded text-white" 
+          />
         </div>
         <div>
-          <label>Email:</label>
-          <Field name="email" type="email" />
+          <label className="block mb-1 text-gray-200">Email:</label>
+          <Field 
+            name="email" 
+            type="email" 
+            className="w-full p-2 bg-[#16223f] border border-gray-700 rounded text-white" 
+          />
         </div>
-        <button type="submit">Submit</button>
+        <button 
+          type="submit" 
+          className="px-4 py-2 bg-indigo-600 text-white rounded cursor-pointer hover:bg-indigo-700"
+        >
+          Submit
+        </button>
       </Form>
     </Formik>
   );
 }
 ```
 
-#### Concepts to Highlight:
+#### Concepts to Highlight
+
 * **`<Formik>`** — The parent wrapper. `initialValues` defines the field names and their starting values.
 * **`<Form>`** — Replaces the standard `<form>` tag. It automatically prevents the default page reload, and only calls `onSubmit` after all validation passes.
 * **`<Field>`** — Replaces `<input>`. The `name` prop is the link to Formik's state. It must exactly match a key in `initialValues`. No `onChange`, no `value` prop, no manual event handlers needed.
 
 > [!WARNING]
 > **Common Mistake #1 — The Silent Name Mismatch**
+>
 > If the `name` attribute on a `<Field>` doesn't match a key in `initialValues`, the field is silently disconnected from Formik's state.
+>
 > ```jsx
 > // initialValues has "username"
 > initialValues={{ username: '' }}
-> 
+>
 > <Field name="userName" />  // ❌ Wrong — breaks silently due to capital 'N'
 > <Field name="username" />  // ✅ Correct
 > ```
@@ -137,7 +164,8 @@ const RegisterSchema = Yup.object().shape({
 });
 ```
 
-**Explain the structure:**
+**Explain the structure**
+
 * `Yup.object().shape({})` — wraps the whole form. Each key maps to a field in `initialValues`.
 * `Yup.string()` — declares the expected data type for that field.
 * `.required()`, `.min()`, `.email()` — chainable rules. The string argument inside each is the custom error message.
@@ -179,32 +207,47 @@ export default function App() {
       validationSchema={RegisterSchema}
       onSubmit={(values) => console.log('Submitted:', values)}
     >
-      <Form>
+      <Form className="p-6 max-w-md mx-auto border border-gray-800 bg-[#0d1527] rounded-xl flex flex-col gap-4">
         <div>
-          <label>Username</label>
-          <Field name="username" type="text" />
-          <ErrorMessage name="username" component="div" />
+          <label className="block mb-1 text-gray-200">Username</label>
+          <Field 
+            name="username" 
+            type="text" 
+            className="w-full p-2 bg-[#16223f] border border-gray-700 rounded text-white" 
+          />
+          <ErrorMessage name="username" component="div" className="text-red-500 text-sm mt-1" />
         </div>
 
         <div>
-          <label>Email</label>
-          <Field name="email" type="email" />
-          <ErrorMessage name="email" component="div" />
+          <label className="block mb-1 text-gray-200">Email</label>
+          <Field 
+            name="email" 
+            type="email" 
+            className="w-full p-2 bg-[#16223f] border border-gray-700 rounded text-white" 
+          />
+          <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
         </div>
 
-        <button type="submit">Submit</button>
+        <button 
+          type="submit" 
+          className="px-4 py-2 bg-indigo-600 text-white rounded cursor-pointer hover:bg-indigo-700"
+        >
+          Submit
+        </button>
       </Form>
     </Formik>
   );
 }
 ```
 
-#### Concepts to Highlight:
+#### Concepts to Highlight
+
 * **"Touched" State:** Represents if the user has focused and unfocused the input field. Errors only show up *after* a field is touched.
 * **`component="div"`** — tells `<ErrorMessage>` what HTML element to wrap the error text in. Without it, it renders a plain string with no wrapping element.
 
 > [!WARNING]
 > **Common Mistake #2 — Missing `component` on `<ErrorMessage>`**
+>
 > ```jsx
 > // No component prop — renders a plain string, className has no effect:
 > <ErrorMessage name="username" className="text-red-500" />  // ❌
@@ -220,6 +263,7 @@ export default function App() {
 **Goal:** Cover three patterns students will need immediately in real projects.
 
 #### Pattern A: Resetting the Form After Submit
+
 After a successful submission, the form fields stay populated. Clear them using `resetForm()` from the second argument of `onSubmit` (`formikHelpers`):
 
 ```jsx
@@ -234,23 +278,34 @@ After a successful submission, the form fields stay populated. Clear them using 
 ```
 
 #### Pattern B: Using `<Field>` for Textarea and Select
+
 `<Field>` is not limited to text inputs. Use the `as` prop to render other HTML elements:
 
 ```jsx
 {/* Textarea */}
-<Field name="bio" as="textarea" rows={4} />
-<ErrorMessage name="bio" component="div" />
+<Field 
+  name="bio" 
+  as="textarea" 
+  rows={4} 
+  className="w-full p-2 bg-[#16223f] border border-gray-700 rounded text-white" 
+/>
+<ErrorMessage name="bio" component="div" className="text-red-500 text-sm mt-1" />
 
 {/* Select dropdown */}
-<Field name="role" as="select">
+<Field 
+  name="role" 
+  as="select" 
+  className="w-full p-2 bg-[#16223f] border border-gray-700 rounded text-white"
+>
   <option value="">Select a role...</option>
   <option value="student">Student</option>
   <option value="teacher">Teacher</option>
 </Field>
-<ErrorMessage name="role" component="div" />
+<ErrorMessage name="role" component="div" className="text-red-500 text-sm mt-1" />
 ```
 
 #### Pattern C: Disabling Submit During Async Processing
+
 When `onSubmit` makes an API call, the button should be disabled to prevent double-submissions. Use `setSubmitting` from `formikHelpers`:
 
 ```jsx
@@ -271,18 +326,20 @@ When `onSubmit` makes an API call, the button should be disabled to prevent doub
 **Task:** Build a contact form with the following requirements entirely from scratch:
 
 | Field | Type | Validation Rules |
-|---|---|---|
+| :--- | :--- | :--- |
 | `fullName` | text | Required, minimum 2 characters |
 | `email` | email | Required, valid email format |
 | `message` | textarea | Required, minimum 10 characters |
 
-**Requirements:**
+**Requirements**
+
 1. Show an error under each field when it is touched and invalid.
 2. Log the submitted values to the console on submit.
 3. Reset the form after successful submission.
 4. Use `<Field as="textarea">` for the message field.
 
-**Starter code:**
+**Starter code**
+
 ```jsx
 const initialValues = {
   fullName: '',
@@ -296,7 +353,7 @@ const initialValues = {
 ## ⚠️ Common Mistakes Quick Reference
 
 | Mistake | Symptom | Fix |
-|---|---|---|
+| :--- | :--- | :--- |
 | `Field name` doesn't match `initialValues` key | Field doesn't update; silent failure | Exact string match required — typos break silently |
 | Missing `component` on `<ErrorMessage>` | CSS classes/styles have no effect | Add `component="div"` |
 | Expecting `onSubmit` to fire despite errors | `onSubmit` never runs | `<Form>` gates submission behind validation |

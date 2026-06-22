@@ -67,22 +67,35 @@ export default function RegisterForm() {
         }}
       >
         {/* 3. Render the Form Components */}
-        <Form>
+        <Form className="p-6 max-w-md mx-auto border border-gray-800 bg-[#0d1527] rounded-xl flex flex-col gap-4">
           <div className="input-group">
-            <label>Username</label>
-            <Field name="username" type="text" />
+            <label className="block mb-1 text-gray-200">Username</label>
+            <Field 
+              name="username" 
+              type="text" 
+              className="w-full p-2 bg-[#16223f] border border-gray-700 rounded text-white" 
+            />
 
             {/* component="div" renders the error wrapped in a <div> */}
-            <ErrorMessage name="username" component="div" className="error-msg" />
+            <ErrorMessage name="username" component="div" className="text-red-500 text-sm mt-1" />
           </div>
 
           <div className="input-group">
-            <label>Email Address</label>
-            <Field name="email" type="email" />
-            <ErrorMessage name="email" component="div" className="error-msg" />
+            <label className="block mb-1 text-gray-200">Email Address</label>
+            <Field 
+              name="email" 
+              type="email" 
+              className="w-full p-2 bg-[#16223f] border border-gray-700 rounded text-white" 
+            />
+            <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
           </div>
 
-          <button type="submit">Register</button>
+          <button 
+            type="submit" 
+            className="px-4 py-2 bg-indigo-600 text-white rounded cursor-pointer hover:bg-indigo-700"
+          >
+            Register
+          </button>
         </Form>
       </Formik>
     </div>
@@ -113,10 +126,19 @@ The `<Field>` component defaults to a text input. You can render other fields us
 
 ```jsx
 {/* Textarea for large text blocks */}
-<Field name="bio" as="textarea" rows={4} />
+<Field 
+  name="bio" 
+  as="textarea" 
+  rows={4} 
+  className="w-full p-2 bg-[#16223f] border border-gray-700 rounded text-white" 
+/>
 
 {/* Select dropdown list */}
-<Field name="role" as="select">
+<Field 
+  name="role" 
+  as="select" 
+  className="w-full p-2 bg-[#16223f] border border-gray-700 rounded text-white"
+>
   <option value="">Select option...</option>
   <option value="student">Student</option>
   <option value="developer">Developer</option>
