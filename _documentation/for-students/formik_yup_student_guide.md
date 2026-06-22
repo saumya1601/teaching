@@ -1,6 +1,6 @@
 # 🚀 Student Guide: Form Validation with Formik & Yup (No Hooks Required)
 
-Welcome! This guide will help you understand how to build clean, error-free, and validated forms in React using **Formik** and **Yup**. 
+Welcome! This guide will help you understand how to build clean, error-free, and validated forms in React using **Formik** and **Yup**.
 
 Instead of writing complex state code and manual checking functions, you will learn to build forms using simple, declarative React components.
 
@@ -56,7 +56,7 @@ export default function RegisterForm() {
   return (
     <div className="form-container">
       <h2>Register Account</h2>
-      
+
       {/* 2. Configure Formik */}
       <Formik
         initialValues={{ username: '', email: '' }}
@@ -71,7 +71,7 @@ export default function RegisterForm() {
           <div className="input-group">
             <label>Username</label>
             <Field name="username" type="text" />
-            
+
             {/* component="div" renders the error wrapped in a <div> */}
             <ErrorMessage name="username" component="div" className="error-msg" />
           </div>
@@ -95,16 +95,22 @@ export default function RegisterForm() {
 ## 🔍 Key Concepts to Remember
 
 ### 1. The Power of `name`
+
 The `name` attribute on `<Field>` and `<ErrorMessage>` must match the key in `initialValues` **exactly**. If they don't match, the input will not update.
+
 * `initialValues={{ email: '' }}` ➔ `<Field name="email" />` ✅
 * `initialValues={{ email: '' }}` ➔ `<Field name="userEmail" />` ❌ (Will break silently)
 
 ### 2. What is "Touched"?
-Formik tracks whether a user has clicked inside an input field and then clicked away (this is called the **blur** event). 
+
+Formik tracks whether a user has clicked inside an input field and then clicked away (this is called the **blur** event).
+
 * **Why it matters:** `<ErrorMessage>` only shows errors for fields that have been "touched". This prevents the form from showing red error messages as soon as the page loads.
 
 ### 3. Creating Textareas & Dropdowns
+
 The `<Field>` component defaults to a text input. You can render other fields using the `as` prop:
+
 ```jsx
 {/* Textarea for large text blocks */}
 <Field name="bio" as="textarea" rows={4} />
@@ -131,18 +137,74 @@ If your form is not working, check these five things:
 
 ---
 
-## 🏋️ Hands-on Challenge: Build a Contact Form
+## 🏋️ Practice Exercises
 
-Now it's your turn! Create a **Contact Us** form inside your app with the following requirements:
+Practice is the best way to master Formik and Yup. Try building the following three forms in your application:
 
-### Fields & Rules
-| Field Name | HTML Element | Validation Rules |
-|---|---|---|
-| `fullName` | Input (Text) | Required, minimum 2 characters |
-| `email` | Input (Email) | Required, must be a valid email format |
-| `message` | Textarea | Required, minimum 10 characters |
+---
 
-### Requirements
-1. Show custom error messages underneath each field when touched and invalid.
-2. Use `console.log(values)` to view the data upon successful submission.
-3. Reset the form inputs automatically after submission.
+### 🟢 Exercise 1 (Easy): Standard Contact Form
+
+Build a simple form for users to send a message.
+
+#### Exercise 1: Fields & Validation Rules
+
+| Field Name | Input Type | HTML Element | Validation Rules |
+| :--- | :--- | :--- | :--- |
+| `fullName` | `text` | `<Field>` | Required, minimum of 2 characters. |
+| `email` | `email` | `<Field>` | Required, must be a valid email format. |
+| `message` | `text` | `<Field as="textarea">` | Required, minimum of 10 characters. |
+
+#### Exercise 1: Requirements
+
+* Render error messages wrapped in a `div` tag when inputs are touched and invalid.
+* Log the completed `values` object to the browser console on successful submission.
+* Automatically clear all inputs using `resetForm()` when the form is submitted.
+
+---
+
+### 🟡 Exercise 2 (Medium): User Login Form
+
+Build a login portal with password length checks.
+
+#### Exercise 2: Fields & Validation Rules
+
+| Field Name | Input Type | HTML Element | Validation Rules |
+| :--- | :--- | :--- | :--- |
+| `email` | `email` | `<Field>` | Required, must be a valid email address. |
+| `password` | `password` | `<Field type="password">` | Required, minimum of 6 characters. |
+
+#### Exercise 2: Requirements
+
+* Show custom error messages (e.g., *"Password must be at least 6 characters"*) only after a field is touched.
+* If submitting succeeds, display a standard browser `alert("Logged in successfully!")` displaying the email address.
+
+---
+
+### 🔴 Exercise 3 (Hard): Course Feedback Form
+
+Build a feedback form containing number validation, a select dropdown, and a checkbox.
+
+#### Exercise 3: Fields & Validation Rules
+
+| Field Name | Input Type | HTML Element | Validation Rules |
+| :--- | :--- | :--- | :--- |
+| `studentName` | `text` | `<Field>` | Required. |
+| `age` | `number` | `<Field type="number">` | Required, must be a number between **18** and **99**. |
+| `course` | select | `<Field as="select">` | Required. Options: React Basics, Advanced CSS, Node.js. |
+| `comments` | text | `<Field as="textarea">` | Optional. However, if filled, it must be at least **15** characters. |
+
+> [!TIP]
+> **How to make a field optional in Yup:**
+> In Yup, fields are optional by default. To set a minimum length only *if* a user decides to type something, use:
+> `comments: Yup.string().min(15, 'Must be at least 15 characters')` (do **not** append `.required()`).
+>
+> **How to do number ranges in Yup:**
+> You can restrict numbers using `.min()` and `.max()`:
+> `age: Yup.number().min(18, 'Must be at least 18').max(99, 'Must be under 100').required('Age is required')`
+
+#### Exercise 3: Requirements
+
+* Display error messages in a distinct style (e.g., colored red).
+* Render select options inside `<Field as="select">` with a default placeholder choice (e.g., *"Select a course..."*).
+* Reset the form inputs automatically on submission.
