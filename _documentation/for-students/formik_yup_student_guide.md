@@ -67,32 +67,32 @@ export default function RegisterForm() {
         }}
       >
         {/* 3. Render the Form Components */}
-        <Form className="p-6 max-w-md mx-auto border border-gray-800 bg-[#0d1527] rounded-xl flex flex-col gap-4">
+        <Form className="border border-black p-4 rounded max-w-md mx-auto flex flex-col gap-4">
           <div className="input-group">
-            <label className="block mb-1 text-gray-200">Username</label>
+            <label className="block mb-1">Username</label>
             <Field 
               name="username" 
               type="text" 
-              className="w-full p-2 bg-[#16223f] border border-gray-700 rounded text-white" 
+              className="w-full border border-black p-2 rounded" 
             />
 
             {/* component="div" renders the error wrapped in a <div> */}
-            <ErrorMessage name="username" component="div" className="text-red-500 text-sm mt-1" />
+            <ErrorMessage name="username" component="div" className="text-red-600 text-sm mt-1" />
           </div>
 
           <div className="input-group">
-            <label className="block mb-1 text-gray-200">Email Address</label>
+            <label className="block mb-1">Email Address</label>
             <Field 
               name="email" 
               type="email" 
-              className="w-full p-2 bg-[#16223f] border border-gray-700 rounded text-white" 
+              className="w-full border border-black p-2 rounded" 
             />
-            <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
+            <ErrorMessage name="email" component="div" className="text-red-600 text-sm mt-1" />
           </div>
 
           <button 
             type="submit" 
-            className="px-4 py-2 bg-indigo-600 text-white rounded cursor-pointer hover:bg-indigo-700"
+            className="bg-black text-white p-2 rounded hover:bg-gray-800 cursor-pointer"
           >
             Register
           </button>
@@ -130,14 +130,14 @@ The `<Field>` component defaults to a text input. You can render other fields us
   name="bio" 
   as="textarea" 
   rows={4} 
-  className="w-full p-2 bg-[#16223f] border border-gray-700 rounded text-white" 
+  className="w-full border border-black p-2 rounded" 
 />
 
 {/* Select dropdown list */}
 <Field 
   name="role" 
   as="select" 
-  className="w-full p-2 bg-[#16223f] border border-gray-700 rounded text-white"
+  className="w-full border border-black p-2 rounded"
 >
   <option value="">Select option...</option>
   <option value="student">Student</option>

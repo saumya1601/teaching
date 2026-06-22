@@ -53,15 +53,15 @@ Then, delete the contents of `App.jsx` and `index.css` (or styles that might con
 // Show this first — watch the page reload on submit!
 function BrokenForm() {
   return (
-    <form className="p-6 max-w-md mx-auto border border-gray-800 bg-[#0d1527] rounded-xl flex flex-col gap-4">
+    <form className="border border-black p-4 rounded max-w-md mx-auto flex flex-col gap-4">
       <input 
         type="text" 
         placeholder="Username" 
-        className="w-full p-2 bg-[#16223f] border border-gray-700 rounded text-white" 
+        className="border border-black p-2 rounded" 
       />
       <button 
         type="submit" 
-        className="px-4 py-2 bg-indigo-600 text-white rounded cursor-pointer hover:bg-indigo-700"
+        className="bg-black text-white p-2 rounded hover:bg-gray-800 cursor-pointer"
       >
         Submit
       </button>
@@ -97,26 +97,26 @@ function SimpleForm() {
         console.log('Submitted:', values);
       }}
     >
-      <Form className="p-6 max-w-md mx-auto border border-gray-800 bg-[#0d1527] rounded-xl flex flex-col gap-4">
+      <Form className="border border-black p-4 rounded max-w-md mx-auto flex flex-col gap-4">
         <div>
-          <label className="block mb-1 text-gray-200">Username:</label>
+          <label className="block mb-1">Username:</label>
           <Field 
             name="username" 
             type="text" 
-            className="w-full p-2 bg-[#16223f] border border-gray-700 rounded text-white" 
+            className="w-full border border-black p-2 rounded" 
           />
         </div>
         <div>
-          <label className="block mb-1 text-gray-200">Email:</label>
+          <label className="block mb-1">Email:</label>
           <Field 
             name="email" 
             type="email" 
-            className="w-full p-2 bg-[#16223f] border border-gray-700 rounded text-white" 
+            className="w-full border border-black p-2 rounded" 
           />
         </div>
         <button 
           type="submit" 
-          className="px-4 py-2 bg-indigo-600 text-white rounded cursor-pointer hover:bg-indigo-700"
+          className="bg-black text-white p-2 rounded hover:bg-gray-800 cursor-pointer"
         >
           Submit
         </button>
@@ -207,30 +207,30 @@ export default function App() {
       validationSchema={RegisterSchema}
       onSubmit={(values) => console.log('Submitted:', values)}
     >
-      <Form className="p-6 max-w-md mx-auto border border-gray-800 bg-[#0d1527] rounded-xl flex flex-col gap-4">
+      <Form className="border border-black p-4 rounded max-w-md mx-auto flex flex-col gap-4">
         <div>
-          <label className="block mb-1 text-gray-200">Username</label>
+          <label className="block mb-1">Username</label>
           <Field 
             name="username" 
             type="text" 
-            className="w-full p-2 bg-[#16223f] border border-gray-700 rounded text-white" 
+            className="w-full border border-black p-2 rounded" 
           />
-          <ErrorMessage name="username" component="div" className="text-red-500 text-sm mt-1" />
+          <ErrorMessage name="username" component="div" className="text-red-600 text-sm mt-1" />
         </div>
 
         <div>
-          <label className="block mb-1 text-gray-200">Email</label>
+          <label className="block mb-1">Email</label>
           <Field 
             name="email" 
             type="email" 
-            className="w-full p-2 bg-[#16223f] border border-gray-700 rounded text-white" 
+            className="w-full border border-black p-2 rounded" 
           />
-          <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
+          <ErrorMessage name="email" component="div" className="text-red-600 text-sm mt-1" />
         </div>
 
         <button 
           type="submit" 
-          className="px-4 py-2 bg-indigo-600 text-white rounded cursor-pointer hover:bg-indigo-700"
+          className="bg-black text-white p-2 rounded hover:bg-gray-800 cursor-pointer"
         >
           Submit
         </button>
@@ -287,21 +287,21 @@ After a successful submission, the form fields stay populated. Clear them using 
   name="bio" 
   as="textarea" 
   rows={4} 
-  className="w-full p-2 bg-[#16223f] border border-gray-700 rounded text-white" 
+  className="w-full border border-black p-2 rounded" 
 />
-<ErrorMessage name="bio" component="div" className="text-red-500 text-sm mt-1" />
+<ErrorMessage name="bio" component="div" className="text-red-600 text-sm mt-1" />
 
 {/* Select dropdown */}
 <Field 
   name="role" 
   as="select" 
-  className="w-full p-2 bg-[#16223f] border border-gray-700 rounded text-white"
+  className="w-full border border-black p-2 rounded"
 >
   <option value="">Select a role...</option>
   <option value="student">Student</option>
   <option value="teacher">Teacher</option>
 </Field>
-<ErrorMessage name="role" component="div" className="text-red-500 text-sm mt-1" />
+<ErrorMessage name="role" component="div" className="text-red-600 text-sm mt-1" />
 ```
 
 #### Pattern C: Disabling Submit During Async Processing
