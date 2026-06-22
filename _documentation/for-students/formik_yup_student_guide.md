@@ -4,12 +4,27 @@ Welcome! This guide will help you understand how to build clean, error-free, and
 
 Instead of writing complex state code and manual checking functions, you will learn to build forms using simple, declarative React components.
 
+> [!NOTE]
+> **Why do we need this?** In standard HTML, forms handle their own data. In React, we want to control that data instantly as the user types (this is called "state"). Formik does all that heavy lifting for us without requiring us to write complex state management code.
+
 ---
 
 ## 📦 What are Formik and Yup?
 
 * **Formik** is a library that manages the state of your forms (what the user typed, whether there are errors, and when the form is submitting).
 * **Yup** is a validation library. You define a "schema" (a list of rules) for your inputs, and Yup checks the data for you.
+
+---
+
+## 🔄 The Data Flow (How it works under the hood)
+
+```mermaid
+graph TD
+    A["User types in Field name='email'"] -->|1. Automatically updates| B["Formik State (initialValues.email)"]
+    B -->|2. Runs validation checks| C["Yup Schema (RegisterSchema)"]
+    C -->|3a. If invalid, generates error| D["ErrorMessage name='email' renders"]
+    C -->|3b. If valid & user submits| E["onSubmit handler runs"]
+```
 
 ---
 
@@ -145,6 +160,51 @@ The `<Field>` component defaults to a text input. You can render other fields us
 </Field>
 ```
 
+### 4. Matching Passwords (Confirm Password)
+
+A very common requirement is verifying that a password and confirm password field match. In Yup, you can use `Yup.ref` to check if a field's value matches another field:
+
+```javascript
+const SignupSchema = Yup.object().shape({
+  password: Yup.string()
+    .min(6, 'Password must be at least 6 characters')
+    .required('Password is required'),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref('password'), null], 'Passwords must match')
+    .required('Please confirm your password'),
+});
+```
+
+### 5. Disabling the Submit Button (Render Props)
+
+To prevent users from clicking the submit button multiple times while an API request is loading, you can access Formik's internal `isSubmitting` state.
+
+Instead of passing normal tags as children to `<Formik>`, we pass a function (this is called the **render props** pattern). Formik provides an object containing state variables like `isSubmitting` directly to this function:
+
+```jsx
+<Formik
+  initialValues={{ username: '', email: '' }}
+  onSubmit={async (values, { setSubmitting }) => {
+    await submitToApi(values);
+    setSubmitting(false); // re-enables the button
+  }}
+>
+  {({ isSubmitting }) => (
+    <Form className="border border-black p-4 rounded max-w-md mx-auto flex flex-col gap-4">
+      {/* Inputs go here */}
+      
+      <button 
+        type="submit" 
+        disabled={isSubmitting}
+        className="bg-black text-white p-2 rounded hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {isSubmitting ? 'Submitting...' : 'Submit'}
+      </button>
+    </Form>
+  )}
+</Formik>
+```
+
 ---
 
 ## 🚨 Troubleshooting: Common Mistakes Checklist
@@ -185,9 +245,9 @@ Build a simple form for users to send a message.
 
 ---
 
-### 🟡 Exercise 2 (Medium): User Login Form
+### 🟡 Exercise 2 (Medium): User Sign-Up Form
 
-Build a login portal with password length checks.
+Build a sign-up form with password verification.
 
 #### Exercise 2: Fields & Validation Rules
 
@@ -195,17 +255,19 @@ Build a login portal with password length checks.
 | :--- | :--- | :--- | :--- |
 | `email` | `email` | `<Field>` | Required, must be a valid email address. |
 | `password` | `password` | `<Field type="password">` | Required, minimum of 6 characters. |
+| `confirmPassword` | `password` | `<Field type="password">` | Required, must match password. |
 
 #### Exercise 2: Requirements
 
-* Show custom error messages (e.g., *"Password must be at least 6 characters"*) only after a field is touched.
-* If submitting succeeds, display a standard browser `alert("Logged in successfully!")` displaying the email address.
+* Show custom error messages only after a field is touched.
+* Use `Yup.ref('password')` to make sure the confirmation password matches the password.
+* If submission succeeds, display a standard browser `alert("Sign Up completed successfully!")`.
 
 ---
 
 ### 🔴 Exercise 3 (Hard): Course Feedback Form
 
-Build a feedback form containing number validation, a select dropdown, and a checkbox.
+Build a feedback form containing number validation, a select dropdown, and an async submit block.
 
 #### Exercise 3: Fields & Validation Rules
 
@@ -229,4 +291,5 @@ Build a feedback form containing number validation, a select dropdown, and a che
 
 * Display error messages in a distinct style (e.g., colored red).
 * Render select options inside `<Field as="select">` with a default placeholder choice (e.g., *"Select a course..."*).
+* Use the **render props** pattern on `<Formik>` to disable the submit button and show "Submitting..." while an async process completes (simulate this with a `setTimeout` inside `onSubmit` or an async delay).
 * Reset the form inputs automatically on submission.
