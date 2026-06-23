@@ -9,6 +9,66 @@ Instead of writing complex state code and manual checking functions, you will le
 
 ---
 
+## 🛑 The Traditional Way: Standard Forms (No State, No Hooks)
+
+Before learning Formik and Yup, let's look at how standard HTML forms handle data natively in React without any state or hooks, relying on native browser validation and logging to the console:
+
+```jsx
+export default function NativeRegisterForm() {
+  const handleSubmit = (event) => {
+    event.preventDefault(); // Stop the browser from reloading the page
+
+    // Retrieve input values directly from the form elements using FormData
+    const formData = new FormData(event.currentTarget);
+    const username = formData.get('username');
+    const email = formData.get('email');
+
+    console.log('Form successfully submitted!', { username, email });
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="border border-black p-4 rounded max-w-md mx-auto flex flex-col gap-4">
+      {/* Username Field with native validation */}
+      <div className="input-group">
+        <label htmlFor="username" className="block mb-1">Username</label>
+        <input 
+          id="username"
+          name="username" 
+          type="text" 
+          required 
+          minLength={3} 
+          className="w-full border border-black p-2 rounded" 
+        />
+      </div>
+
+      {/* Email Field with native browser check */}
+      <div className="input-group">
+        <label htmlFor="email" className="block mb-1">Email Address</label>
+        <input 
+          id="email"
+          name="email" 
+          type="email" 
+          required 
+          className="w-full border border-black p-2 rounded" 
+        />
+      </div>
+
+      <button type="submit" className="bg-black text-white p-2 rounded hover:bg-gray-800">
+        Register
+      </button>
+    </form>
+  );
+}
+```
+
+### ⚠️ Limitations of Native Validation (No State/Hooks)
+
+* **Hard to Customize Style:** Native browser validation tooltips (bubbles) look different across Chrome, Safari, and Firefox, and they cannot be styled easily using CSS.
+* **No Real-Time Feedback:** You cannot check values as the user types (e.g., showing a green checkmark or checking password strength in real-time).
+* **Limited Validation Logic:** Native validation is limited to simple checks. It cannot do complex validation like comparing two inputs (e.g., matching Passwords) or checking database records.
+
+---
+
 ## 📦 What are Formik and Yup?
 
 * **Formik** is a library that manages the state of your forms (what the user typed, whether there are errors, and when the form is submitting).
