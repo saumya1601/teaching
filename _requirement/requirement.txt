@@ -1,0 +1,7 @@
+Submission Requirements:
+To successfully submit this task, you must:
+1. Push your code to a public GitHub repository.
+2. Deploy your application to Vercel and verify the live URL is working correctly.
+3. Share the following links in your submission:
+   - Public GitHub repository link
+   - Live Vercel deployment link

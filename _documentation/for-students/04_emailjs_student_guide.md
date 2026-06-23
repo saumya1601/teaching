@@ -42,6 +42,9 @@ Go to [emailjs.com](https://www.emailjs.com) and create a free account.
   ```
 * Save the template and note down your **Template ID** (e.g., `template_xyz987`).
 
+> [!IMPORTANT]
+> The variable names you put inside `{{ }}` in your EmailJS template **must match exactly** the `name` attributes on your form inputs (for `sendForm`) or the object keys you pass to `emailjs.send()`. If they don't match, the email will arrive with empty fields. EmailJS's auto-generated starter templates sometimes use `{{name}}`, `{{email}}`, `{{message}}` — if you copy those, update your form `name` attributes to match.
+
 ### 4. Get Your Public API Key
 * Navigate to **Account** ➔ **API Keys** in the sidebar.
 * Copy your **Public Key** (which acts as your credential to connect the React app to your account).

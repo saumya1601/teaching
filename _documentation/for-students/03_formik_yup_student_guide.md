@@ -114,7 +114,7 @@ Formik provides four main components that work together to replace standard HTML
 Below is a complete, working example of a Register Form. Read the code comments to understand how each part works.
 
 ```jsx
-  import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 // 1. Define the Validation Rules (Yup Schema)
@@ -230,10 +230,13 @@ const SignupSchema = Yup.object().shape({
     .min(6, 'Password must be at least 6 characters')
     .required('Password is required'),
   confirmPassword: Yup.string()
-    .oneOf([Yup.ref('password'), null], 'Passwords must match')
+    .oneOf([Yup.ref('password')], 'Passwords must match')
     .required('Please confirm your password'),
 });
 ```
+
+> [!NOTE]
+> In older Yup tutorials you may see `.oneOf([Yup.ref('password'), null], ...)`. The trailing `null` is **deprecated in Yup v1+** and triggers a console warning. Drop it.
 
 ### 5. Disabling the Submit Button (Render Props)
 
@@ -345,7 +348,7 @@ Build a feedback form containing number validation, a select dropdown, and an as
 >
 > **How to do number ranges in Yup:**
 > You can restrict numbers using `.min()` and `.max()`:
-> `age: Yup.number().min(18, 'Must be at least 18').max(99, 'Must be under 100').required('Age is required')`
+> `age: Yup.number().min(18, 'Must be at least 18').max(99, 'Must be 99 or under').required('Age is required')`
 
 #### Exercise 3: Requirements
 
