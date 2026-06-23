@@ -143,97 +143,86 @@ export default function BasicContactForm() {
 
 ## 🚀 Step 4: Integrate with Formik & Yup (For Production Apps)
 
-For real-world projects, you will want custom error messages and visual states. Here is how to integrate EmailJS with a React form managed by **Formik** and **Yup**:
+For real-world projects, you will want custom error messages and validation. Here is how to integrate EmailJS with a React form managed by **Formik** and **Yup**:
+
+By naming our Formik input fields to match our EmailJS template placeholder names (`from_name`, `from_email`, `message`), we can pass the form `values` directly without doing any manual object mapping!
 
 ```jsx
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import emailjs from '@emailjs/browser';
 
-// 1. Define schema validation rules
+// 1. Define schema validation rules (keys match template fields)
 const ContactSchema = Yup.object().shape({
-  fullName: Yup.string().required('Name is required'),
-  email: Yup.string().email('Invalid email').required('Email is required'),
+  from_name: Yup.string().required('Name is required'),
+  from_email: Yup.string().email('Invalid email').required('Email is required'),
   message: Yup.string().required('Message is required'),
 });
 
 export default function FormikContactForm() {
-  const handleSubmitMail = (values, { setSubmitting, resetForm }) => {
-    // 2. Map Formik form values to the email template variables
-    const templateParams = {
-      from_name: values.fullName,  // maps to {{from_name}} in template
-      from_email: values.email,    // maps to {{from_email}} in template
-      message: values.message,      // maps to {{message}} in template
-    };
-
-    // 3. Send using emailjs.send
+  const handleSubmitMail = (values, helpers) => {
+    // 2. Send directly using emailjs.send with form values
     emailjs.send(
       'YOUR_SERVICE_ID',
       'YOUR_TEMPLATE_ID',
-      templateParams,
+      values, // Pass values directly! No templateParams object needed.
       'YOUR_PUBLIC_KEY'
     )
     .then(() => {
       alert('Message sent to inbox successfully!');
-      resetForm(); // Clear the form fields on success
+      helpers.resetForm(); // Clear the form fields on success
     })
     .catch((err) => {
       console.error('EmailJS error:', err);
       alert('Submission failed, please try again.');
-    })
-    .finally(() => {
-      setSubmitting(false); // Enable the submit button again
     });
   };
 
   return (
     <Formik
-      initialValues={{ fullName: '', email: '', message: '' }}
+      initialValues={{ from_name: '', from_email: '', message: '' }}
       validationSchema={ContactSchema}
       onSubmit={handleSubmitMail}
     >
-      {({ isSubmitting }) => (
-        <Form className="border border-black p-4 rounded max-w-md mx-auto flex flex-col gap-4">
-          <div>
-            <label className="block mb-1">Full Name</label>
-            <Field 
-              name="fullName" 
-              type="text" 
-              className="w-full border border-black p-2 rounded" 
-            />
-            <ErrorMessage name="fullName" component="div" className="text-red-600 text-sm mt-1" />
-          </div>
+      <Form className="border border-black p-4 rounded max-w-md mx-auto flex flex-col gap-4">
+        <div>
+          <label className="block mb-1">Full Name</label>
+          <Field 
+            name="from_name" 
+            type="text" 
+            className="w-full border border-black p-2 rounded" 
+          />
+          <ErrorMessage name="from_name" component="div" className="text-red-600 text-sm mt-1" />
+        </div>
 
-          <div>
-            <label className="block mb-1">Email</label>
-            <Field 
-              name="email" 
-              type="email" 
-              className="w-full border border-black p-2 rounded" 
-            />
-            <ErrorMessage name="email" component="div" className="text-red-600 text-sm mt-1" />
-          </div>
+        <div>
+          <label className="block mb-1">Email</label>
+          <Field 
+            name="from_email" 
+            type="email" 
+            className="w-full border border-black p-2 rounded" 
+          />
+          <ErrorMessage name="from_email" component="div" className="text-red-600 text-sm mt-1" />
+        </div>
 
-          <div>
-            <label className="block mb-1">Message</label>
-            <Field 
-              name="message" 
-              as="textarea" 
-              rows={4}
-              className="w-full border border-black p-2 rounded" 
-            />
-            <ErrorMessage name="message" component="div" className="text-red-600 text-sm mt-1" />
-          </div>
+        <div>
+          <label className="block mb-1">Message</label>
+          <Field 
+            name="message" 
+            as="textarea" 
+            rows={4}
+            className="w-full border border-black p-2 rounded" 
+          />
+          <ErrorMessage name="message" component="div" className="text-red-600 text-sm mt-1" />
+        </div>
 
-          <button 
-            type="submit" 
-            disabled={isSubmitting}
-            className="bg-black text-white p-2 rounded hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-          >
-            {isSubmitting ? 'Sending...' : 'Send Message'}
-          </button>
-        </Form>
-      )}
+        <button 
+          type="submit" 
+          className="bg-black text-white p-2 rounded hover:bg-gray-800 cursor-pointer"
+        >
+          Send Message
+        </button>
+      </Form>
     </Formik>
   );
 }
@@ -271,7 +260,7 @@ Update your EmailJS function call to reference the environment variables:
 emailjs.send(
   import.meta.env.VITE_EMAILJS_SERVICE_ID,
   import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-  templateParams,
+  values, // Pass values directly!
   import.meta.env.VITE_EMAILJS_PUBLIC_KEY
 )
 
@@ -279,7 +268,7 @@ emailjs.send(
 emailjs.send(
   process.env.REACT_APP_EMAILJS_SERVICE_ID,
   process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
-  templateParams,
+  values, // Pass values directly!
   process.env.REACT_APP_EMAILJS_PUBLIC_KEY
 )
 ```
@@ -295,7 +284,7 @@ If your emails aren't arriving or you see errors, check this list:
 
 * **Email arrives empty or missing details?** Check that your parameters (like `from_name`, `from_email`) match the double-curly bracket placeholders (`{{from_name}}`, `{{from_email}}`) in your dashboard template EXACTLY, including matching uppercase and lowercase letters.
 * **Got a `400 Unauthorized` error in the console?** Check that your Public Key matches your dashboard API keys and is passed correctly as the 4th parameter of `emailjs.send()` or `emailjs.sendForm()`.
-* **Submit button stays disabled?** Make sure you called `setSubmitting(false)` in your `.then()`, `.catch()`, or `.finally()` block so the form react-enables.
+* **Submit button stays disabled?** (Only if you chose to add a loading state) Make sure you called `helpers.setSubmitting(false)` in your `.then()` and `.catch()` blocks so the form react-enables.
 * **Environment variables are undefined?** Whenever you edit the `.env` file, you **must stop your local development server and restart it** (e.g., run `npm run dev` again) for the changes to load.
 
 ---
@@ -311,8 +300,8 @@ Build a simple RSVP form for a webinar:
 * Validation: Make name and email required using Formik & Yup.
 * Action: Deliver the form submission to your inbox and clear inputs on success.
 
-### 🔴 Exercise 3 (Hard): Bug Report Form with Loading State
+### 🔴 Exercise 3 (Hard): Bug Report Form
 Build a ticket submission form:
-* Fields: `reporterName`, `email`, `bugDescription` (textarea with a 15-character minimum).
+* Fields: `from_name`, `from_email`, `message` (textarea with a 15-character minimum).
 * Security: Protect all EmailJS credentials using environment variables (`.env`).
-* Visual feedback: The submit button must disable and show `"Sending..."` while the API request is loading, then clear inputs and re-enable once resolved.
+* Integration: Send the form data directly to your connected inbox and clear the inputs upon successful submission.

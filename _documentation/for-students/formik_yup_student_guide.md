@@ -114,7 +114,7 @@ Formik provides four main components that work together to replace standard HTML
 Below is a complete, working example of a Register Form. Read the code comments to understand how each part works.
 
 ```jsx
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+  import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 // 1. Define the Validation Rules (Yup Schema)
@@ -252,7 +252,7 @@ Instead of passing normal tags as children to `<Formik>`, we pass a function (th
   {({ isSubmitting }) => (
     <Form className="border border-black p-4 rounded max-w-md mx-auto flex flex-col gap-4">
       {/* Inputs go here */}
-      
+    
       <button 
         type="submit" 
         disabled={isSubmitting}
@@ -291,11 +291,11 @@ Build a simple form for users to send a message.
 
 #### Exercise 1: Fields & Validation Rules
 
-| Field Name | Input Type | HTML Element | Validation Rules |
-| :--- | :--- | :--- | :--- |
-| `fullName` | `text` | `<Field>` | Required, minimum of 2 characters. |
-| `email` | `email` | `<Field>` | Required, must be a valid email format. |
-| `message` | `text` | `<Field as="textarea">` | Required, minimum of 10 characters. |
+| Field Name   | Input Type | HTML Element              | Validation Rules                        |
+| :----------- | :--------- | :------------------------ | :-------------------------------------- |
+| `fullName` | `text`   | `<Field>`               | Required, minimum of 2 characters.      |
+| `email`    | `email`  | `<Field>`               | Required, must be a valid email format. |
+| `message`  | `text`   | `<Field as="textarea">` | Required, minimum of 10 characters.     |
 
 #### Exercise 1: Requirements
 
@@ -311,11 +311,11 @@ Build a sign-up form with password verification.
 
 #### Exercise 2: Fields & Validation Rules
 
-| Field Name | Input Type | HTML Element | Validation Rules |
-| :--- | :--- | :--- | :--- |
-| `email` | `email` | `<Field>` | Required, must be a valid email address. |
-| `password` | `password` | `<Field type="password">` | Required, minimum of 6 characters. |
-| `confirmPassword` | `password` | `<Field type="password">` | Required, must match password. |
+| Field Name          | Input Type   | HTML Element                | Validation Rules                         |
+| :------------------ | :----------- | :-------------------------- | :--------------------------------------- |
+| `email`           | `email`    | `<Field>`                 | Required, must be a valid email address. |
+| `password`        | `password` | `<Field type="password">` | Required, minimum of 6 characters.       |
+| `confirmPassword` | `password` | `<Field type="password">` | Required, must match password.           |
 
 #### Exercise 2: Requirements
 
@@ -331,12 +331,12 @@ Build a feedback form containing number validation, a select dropdown, and an as
 
 #### Exercise 3: Fields & Validation Rules
 
-| Field Name | Input Type | HTML Element | Validation Rules |
-| :--- | :--- | :--- | :--- |
-| `studentName` | `text` | `<Field>` | Required. |
-| `age` | `number` | `<Field type="number">` | Required, must be a number between **18** and **99**. |
-| `course` | select | `<Field as="select">` | Required. Options: React Basics, Advanced CSS, Node.js. |
-| `comments` | text | `<Field as="textarea">` | Optional. However, if filled, it must be at least **15** characters. |
+| Field Name      | Input Type | HTML Element              | Validation Rules                                                          |
+| :-------------- | :--------- | :------------------------ | :------------------------------------------------------------------------ |
+| `studentName` | `text`   | `<Field>`               | Required.                                                                 |
+| `age`         | `number` | `<Field type="number">` | Required, must be a number between**18** and **99**.          |
+| `course`      | select     | `<Field as="select">`   | Required. Options: React Basics, Advanced CSS, Node.js.                   |
+| `comments`    | text       | `<Field as="textarea">` | Optional. However, if filled, it must be at least**15** characters. |
 
 > [!TIP]
 > **How to make a field optional in Yup:**

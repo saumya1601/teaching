@@ -2,7 +2,7 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-export default function FormikYupValidation() {
+export default function ValidationFormFormikAndYup() {
   function BrokenForm() {
     return (
       <form className="border border-black p-4 rounded max-w-md mx-auto flex flex-col gap-4">

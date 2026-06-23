@@ -6,15 +6,15 @@ This lesson plan is designed to teach students how to connect their front-end fo
 
 ## ⏱️ The 60-Minute Lesson Timeline
 
-| Timebox | Phase | Key Focus |
-| :--- | :--- | :--- |
-| **00:00 - 05:00** | **Setup & Installation** | Install `@emailjs/browser` and prepare the workspace. |
-| **05:00 - 15:00** | **Progression 1: Dashboard Setup** | Create an EmailJS account, connect Gmail, and set up a Template. |
-| **15:00 - 25:00** | **Progression 2: Understanding the 3 Keys** | Locate and copy the Service ID, Template ID, and Public Key. |
-| **25:00 - 38:00** | **Progression 3: Basic Send Integration** | Implement a simple `emailjs.send` function inside React. |
-| **38:00 - 50:00** | **Progression 4: Formik Integration** | Connect EmailJS to the Formik `onSubmit` handler. |
-| **50:00 - 57:00** | **Student Exercise** | Connect their Contact Form exercise from yesterday to their EmailJS template. |
-| **57:00 - 60:00** | **Wrap-Up & Security** | Teach them about `.env` file structure to hide keys before pushing to GitHub. |
+| Timebox           | Phase                                       | Key Focus                                                                     |
+| :------------------| :--------------------------------------------| :------------------------------------------------------------------------------|
+| **00:00 - 05:00** | **Setup & Installation**                    | Install `@emailjs/browser` and prepare the workspace.                         |
+| **05:00 - 15:00** | **Progression 1: Dashboard Setup**          | Create an EmailJS account, connect Gmail, and set up a Template.              |
+| **15:00 - 25:00** | **Progression 2: Understanding the 3 Keys** | Locate and copy the Service ID, Template ID, and Public Key.                  |
+| **25:00 - 38:00** | **Progression 3: Basic Send Integration**   | Implement a simple `emailjs.send` function inside React.                      |
+| **38:00 - 50:00** | **Progression 4: Formik Integration**       | Connect EmailJS to the Formik `onSubmit` handler.                             |
+| **50:00 - 57:00** | **Student Exercise**                        | Connect their Contact Form exercise from yesterday to their EmailJS template. |
+| **57:00 - 60:00** | **Wrap-Up & Security**                      | Teach them about `.env` file structure to hide keys before pushing to GitHub. |
 
 ---
 
@@ -135,85 +135,73 @@ import * as Yup from 'yup';
 import emailjs from '@emailjs/browser';
 
 const ContactSchema = Yup.object().shape({
-  fullName: Yup.string().required('Required'),
-  email: Yup.string().email('Invalid email').required('Required'),
+  from_name: Yup.string().required('Required'),
+  from_email: Yup.string().email('Invalid email').required('Required'),
   message: Yup.string().required('Required'),
 });
 
 export default function ContactUsForm() {
-  function handleSendMail(values, { setSubmitting, resetForm }) {
-    const templateParams = {
-      from_name: values.fullName,
-      from_email: values.email,
-      message: values.message,
-    };
-
+  function handleSendMail(values, helpers) {
     emailjs.send(
       'YOUR_SERVICE_ID',
       'YOUR_TEMPLATE_ID',
-      templateParams,
+      values, // Pass values directly!
       'YOUR_PUBLIC_KEY'
     )
     .then(() => {
       alert('Message sent successfully!');
-      resetForm();
+      helpers.resetForm();
     })
     .catch((error) => {
       console.error('Email error:', error);
       alert('An error occurred. Please try again.');
-    })
-    .finally(() => {
-      setSubmitting(false); // Re-enables the button
     });
   }
 
   return (
     <Formik
-      initialValues={{ fullName: '', email: '', message: '' }}
+      initialValues={{ from_name: '', from_email: '', message: '' }}
       validationSchema={ContactSchema}
       onSubmit={handleSendMail}
     >
-      {({ isSubmitting }) => (
-        <Form className="border border-black p-4 rounded max-w-md mx-auto flex flex-col gap-4">
-          <div>
-            <label className="block mb-1">Full Name</label>
-            <Field 
-              name="fullName" 
-              type="text" 
-              className="w-full border border-black p-2 rounded" 
-            />
-            <ErrorMessage name="fullName" component="div" className="text-red-600 text-sm mt-1" />
-          </div>
+      <Form className="border border-black p-4 rounded max-w-md mx-auto flex flex-col gap-4">
+        <div>
+          <label className="block mb-1">Full Name</label>
+          <Field 
+            name="from_name" 
+            type="text" 
+            className="w-full border border-black p-2 rounded" 
+          />
+          <ErrorMessage name="from_name" component="div" className="text-red-600 text-sm mt-1" />
+        </div>
 
-          <div>
-            <label className="block mb-1">Email</label>
-            <Field 
-              name="email" 
-              type="email" 
-              className="w-full border border-black p-2 rounded" 
-            />
-            <ErrorMessage name="email" component="div" className="text-red-600 text-sm mt-1" />
-          </div>
+        <div>
+          <label className="block mb-1">Email</label>
+          <Field 
+            name="from_email" 
+            type="email" 
+            className="w-full border border-black p-2 rounded" 
+          />
+          <ErrorMessage name="from_email" component="div" className="text-red-600 text-sm mt-1" />
+        </div>
 
-          <div>
-            <label className="block mb-1">Message</label>
-            <Field 
-              name="message" 
-              as="textarea" 
-              className="w-full border border-black p-2 rounded" 
-            />
-            <ErrorMessage name="message" component="div" className="text-red-600 text-sm mt-1" />
-          </div>
+        <div>
+          <label className="block mb-1">Message</label>
+          <Field 
+            name="message" 
+            as="textarea" 
+            className="w-full border border-black p-2 rounded" 
+          />
+          <ErrorMessage name="message" component="div" className="text-red-600 text-sm mt-1" />
+        </div>
 
-          <button 
-            type="submit" 
-            disabled={isSubmitting}
-            className="bg-black text-white p-2 rounded hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-          >
-            {isSubmitting ? 'Sending...' : 'Send Message'}
-          </button>
-        </Form>
-      )}
+        <button 
+          type="submit" 
+          className="bg-black text-white p-2 rounded hover:bg-gray-800 cursor-pointer"
+        >
+          Send Message
+        </button>
+      </Form>
     </Formik>
   );
 }
@@ -221,9 +209,8 @@ export default function ContactUsForm() {
 
 #### Concepts to Highlight
 
-* **Mapping Form Values**: Emphasize how `values.fullName` maps into the parameters object.
-* **`finally()` Block**: We place `setSubmitting(false)` in a `.finally()` or at the end of resolution so the form submission state resets whether the email succeeds or fails.
-* **Visual Loading**: Discuss how `isSubmitting` disables the button and updates the text to `"Sending..."` while the HTTP request resolves.
+* **No Object Mapping Needed**: Highlight how making form input `name` attributes match EmailJS template tags allows passing `values` directly as the third argument.
+* **Simplified Helpers Parameter**: Highlight passing a single parameter `helpers` (the second argument to `onSubmit`) to run `helpers.resetForm()` on success, instead of complex JavaScript object destructuring.
 
 ---
 
@@ -241,12 +228,12 @@ Explain: "If you push your Public Key or Template IDs directly to GitHub, bad ac
    ```
 2. Reference them in code:
    ```javascript
-   emailjs.send(
-     import.meta.env.VITE_EMAILJS_SERVICE_ID,
-     import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-     templateParams,
-     import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-   )
+    emailjs.send(
+      import.meta.env.VITE_EMAILJS_SERVICE_ID,
+      import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+      values, // Pass values directly!
+      import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+    )
    ```
 3. Remind them to add `.env` to their `.gitignore`!
 
@@ -256,8 +243,8 @@ Explain: "If you push your Public Key or Template IDs directly to GitHub, bad ac
 
 **Task:** Connect the "Course Feedback Form" (Exercise 3 from yesterday) to EmailJS.
 * When students submit the form, it must send the Course Name, Student Name, Age, and Comments via EmailJS to their connected inbox.
-* The submit button must show `"Submitting..."` and be disabled during the send process.
-* The form must clear itself only if the send succeeds.
+* Design the form input names to match the template variables exactly so you can pass the form values directly.
+* The form must clear itself only if the send succeeds (use `helpers.resetForm()`).
 
 ---
 
@@ -265,7 +252,6 @@ Explain: "If you push your Public Key or Template IDs directly to GitHub, bad ac
 
 | Mistake | Symptom | Fix |
 | :--- | :--- | :--- |
-| Typo in template param keys | Email arrives empty or missing details | Ensure keys in code parameters match `{{tag}}` in template exactly. |
-| Forgetting `setSubmitting(false)` | Button remains disabled forever after send | Call `setSubmitting(false)` inside `.finally()` or resolved promises. |
+| Typo in template param keys / input names | Email arrives empty or missing details | Ensure `name` attributes of `<Field>` components match `{{tag}}` in the template exactly. |
 | Pushing `.env` to Git | Credentials exposed to public | Double-check that `.env` is listed inside your `.gitignore` file. |
 | Missing email permission authentication | Browser console shows 400 unauthorized error | Go to EmailJS Dashboard and make sure the service is authorized. |
