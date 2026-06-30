@@ -130,7 +130,6 @@ You can start a Git project in two ways: creating a brand-new repository on GitH
    ```bash
    git clone https://github.com/username/repo.git
    ```
-
 8. Open the newly created cloned folder in VS Code to start coding!
 
 ### Option B: Link an Existing Local Folder to GitHub
@@ -143,19 +142,16 @@ If you already created a folder locally (like a Vite React app) and want to uplo
    ```bash
    git init
    ```
-
 3. Set your main branch name to `main`:
 
    ```bash
    git branch -M main
    ```
-
 4. Connect your local folder to your remote GitHub repository:
 
    ```bash
    git remote add origin https://github.com/username/repo.git
    ```
-
 5. Stage all files, commit them, and push:
 
    ```bash
@@ -210,11 +206,13 @@ Thumbs.db
 
 > [!TIP]
 > If you accidentally committed a file you should have ignored (e.g., `.env`), add it to `.gitignore`, then run:
+>
 > ```bash
 > git rm --cached .env
 > git commit -m "chore: stop tracking .env file"
 > git push
 > ```
+>
 > **Important**: If real secrets were pushed, you must immediately rotate/regenerate those API keys — they are now public forever in your Git history.
 
 ### Sharing Environment Variables Safely with `.env.example`
@@ -419,7 +417,6 @@ If a teammate (or your teacher) reviews your PR and requests changes:
    git commit -m "refactor: adjust validation rules based on review feedback"
    git push
    ```
-
 5. **The Pull Request on GitHub will automatically update** with your new commits. You do not need to create a new PR!
 
 ### 3. Merging the PR
@@ -458,10 +455,8 @@ When collaborating, another developer might edit the same lines of code as you. 
    ```bash
    git pull origin main
    ```
-
 2. Git will pause and output:
    `CONFLICT (content): Merge conflict in src/App.jsx. Automatic merge failed; fix conflicts and then commit the result.`
-
 3. Open the conflicting file in VS Code. Conflicts will be marked by Git markers:
 
    ```javascript
@@ -471,15 +466,13 @@ When collaborating, another developer might edit the same lines of code as you. 
    <h1>Welcome, Guest!</h1>  // The incoming change from GitHub
    >>>>>>> main
    ```
-
 4. Choose a resolution:
+
    * Keep your changes (Accept Current Change)
    * Keep their changes (Accept Incoming Change)
    * Keep both changes
    * Write a manual compromise combining both inputs.
-
 5. Delete the helper markers (`<<<<<<<`, `=======`, `>>>>>>>`).
-
 6. Save the file, stage, and commit the resolved conflict:
 
    ```bash
@@ -489,6 +482,7 @@ When collaborating, another developer might edit the same lines of code as you. 
    ```
 
 ---
+
 ## ⏪ Step 7: Undoing Mistakes
 
 Everyone makes mistakes — Git is great at fixing them. Here are the most common "oops" situations beginners run into.
@@ -580,15 +574,15 @@ git stash list
 
 Use a prefix to describe **what type of change** you made. This keeps your history clean and easy to scan.
 
-| Prefix | When to Use | Example |
-| :--- | :--- | :--- |
-| `feat:` | A new feature | `feat: add dark mode toggle` |
-| `fix:` | A bug fix | `fix: prevent crash on empty form submit` |
-| `docs:` | Documentation only | `docs: update README install steps` |
-| `style:` | Formatting (no code change) | `style: format App.jsx with prettier` |
+| Prefix        | When to Use                           | Example                                     |
+| :------------ | :------------------------------------ | :------------------------------------------ |
+| `feat:`     | A new feature                         | `feat: add dark mode toggle`              |
+| `fix:`      | A bug fix                             | `fix: prevent crash on empty form submit` |
+| `docs:`     | Documentation only                    | `docs: update README install steps`       |
+| `style:`    | Formatting (no code change)           | `style: format App.jsx with prettier`     |
 | `refactor:` | Code restructure (no behavior change) | `refactor: extract Button into component` |
-| `test:` | Adding or fixing tests | `test: add unit tests for login form` |
-| `chore:` | Maintenance, deps, configs | `chore: update vite to v5.2` |
+| `test:`     | Adding or fixing tests                | `test: add unit tests for login form`     |
+| `chore:`    | Maintenance, deps, configs            | `chore: update vite to v5.2`              |
 
 ---
 
@@ -603,6 +597,7 @@ Use a prefix to describe **what type of change** you made. This keeps your histo
 
 **Cause**: Someone (or you on another machine) pushed changes to GitHub that you don't have locally.
 **Fix**:
+
 ```bash
 git pull --rebase
 git push
@@ -621,6 +616,7 @@ git push
 ### ❌ Accidentally pushed `.env` or `node_modules/`
 
 **Fix**:
+
 ```bash
 # Stop tracking the file/folder (keeps the local copy)
 git rm -r --cached node_modules
@@ -630,12 +626,14 @@ git rm --cached .env
 git commit -m "chore: remove ignored files from tracking"
 git push
 ```
+
 If real secrets leaked in `.env`, **rotate those keys immediately** on the service that issued them (EmailJS, Firebase, etc.).
 
 ### ❌ `error: pathspec 'main' did not match any file(s) known to git`
 
 **Cause**: Your local default branch is named `master`, not `main`.
 **Fix**:
+
 ```bash
 git branch -M main
 ```
@@ -643,6 +641,7 @@ git branch -M main
 ### ❌ I committed to the wrong branch!
 
 **Fix** (if you haven't pushed yet):
+
 ```bash
 # Create a new branch from your current state
 git branch correct-branch-name
@@ -658,12 +657,12 @@ git switch correct-branch-name
 
 ## 🍴 Bonus: Forking vs. Cloning
 
-| | **Clone** | **Fork** |
-| :--- | :--- | :--- |
-| **What** | Downloads a copy to your computer | Creates a copy on **your GitHub account** |
-| **When** | You own the repo or are a collaborator | You want to contribute to someone else's project |
-| **Push access** | Yes (if you have permission) | Yes (it's your fork!) |
-| **Workflow** | Clone → branch → PR | Fork → clone your fork → branch → PR back to original |
+|                       | **Clone**                        | **Fork**                                           |
+| :-------------------- | :------------------------------------- | :------------------------------------------------------- |
+| **What**        | Downloads a copy to your computer      | Creates a copy on**your GitHub account**           |
+| **When**        | You own the repo or are a collaborator | You want to contribute to someone else's project         |
+| **Push access** | Yes (if you have permission)           | Yes (it's your fork!)                                    |
+| **Workflow**    | Clone → branch → PR                  | Fork → clone your fork → branch → PR back to original |
 
 **How to fork**: On any GitHub repository, click the **Fork** button in the top-right corner. Then clone *your fork* (not the original) to your computer.
 
@@ -687,6 +686,7 @@ Every good repository has a `README.md` file at the root. This is the first thin
 * **Environment variables needed** (point to `.env.example`)
 
 ---
+
 ## 🚨 Git Best Practices Checklist
 
 * [ ] **Configure `.gitignore` before you start**: Never commit `node_modules/`, `.env`, or build outputs (`dist/`) to GitHub. If committed accidentally, delete them with `git rm -r --cached <dir>`.

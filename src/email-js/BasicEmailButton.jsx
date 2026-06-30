@@ -3,19 +3,19 @@ import emailjs from "@emailjs/browser";
 
 export default function BasicEmailButton() {
   function handleSendEmail() {
+    const serviceId = ""; // Replace with your Service ID
+    const templateId = ""; // Replace with your Template ID
+    const publicKey = ""; // Replace with your Public Key
+
     const templateParams = {
-      from_name: "John Doe",
-      from_email: "john@example.com",
-      message: "Hello! This is a test email sent using EmailJS.",
+      name: "John Doe", // Maps to {{name}}
+      email: "john@example.com", // Maps to {{email}}
+      message: "Hello! This is a test email sent using EmailJS.", // Maps to {{message}}
+      title: "Test Email Button Inquiry", // Maps to {{title}}
     };
 
     emailjs
-      .send(
-        "YOUR_SERVICE_ID", // Replace with your Service ID
-        "YOUR_TEMPLATE_ID", // Replace with your Template ID
-        templateParams,
-        "YOUR_PUBLIC_KEY" // Replace with your Public Key
-      )
+      .send(serviceId, templateId, templateParams, publicKey)
       .then((response) => {
         console.log("Success!", response.status, response.text);
         alert("Email sent successfully!");

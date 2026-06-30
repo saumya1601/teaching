@@ -11,13 +11,20 @@ const ContactSchema = Yup.object().shape({
 
 export default function ContactUsForm() {
   function handleSendMail(values, helpers) {
+    const serviceId = "service_x888nfq";
+    const templateId = "template_zl81sgh";
+    const publicKey = "ieDln3vnnBcfhR_rQ";
+
+    // Map your form fields to match the {{placeholder}} keys in your EmailJS template
+    const templateParams = {
+      name: values.from_name, // Maps to {{name}}
+      email: values.from_email, // Maps to {{email}}
+      message: values.message, // Maps to {{message}}
+      title: "Website Contact Form", // Maps to {{title}} in your subject line
+    };
+
     emailjs
-      .send(
-        "YOUR_SERVICE_ID",
-        "YOUR_TEMPLATE_ID",
-        values, // Pass values directly!
-        "YOUR_PUBLIC_KEY"
-      )
+      .send(serviceId, templateId, templateParams, publicKey)
       .then(() => {
         alert("Message sent successfully!");
         helpers.resetForm();

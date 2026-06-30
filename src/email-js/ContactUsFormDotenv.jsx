@@ -11,11 +11,18 @@ const ContactSchema = Yup.object().shape({
 
 export default function ContactUsFormDotenv() {
   function handleSendMail(values, helpers) {
+    const templateParams = {
+      name: values.from_name,       // Maps to {{name}}
+      email: values.from_email,     // Maps to {{email}}
+      message: values.message,      // Maps to {{message}}
+      title: "Dotenv Contact Form", // Maps to {{title}} in your subject line
+    };
+
     emailjs
       .send(
         import.meta.env.VITE_EMAILJS_SERVICE_ID,
         import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-        values, // Pass values directly!
+        templateParams,
         import.meta.env.VITE_EMAILJS_PUBLIC_KEY
       )
       .then(() => {
